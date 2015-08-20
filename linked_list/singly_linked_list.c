@@ -77,6 +77,14 @@ struct list* insert(struct list *list, int element)
     return append(list, newNode);
 }
 
+struct node* find_node(struct node* current, int element)
+{
+  if(current->next == NULL || current->next->element == element)
+    return current;
+  else
+    return find_node(current->next, element);
+}
+
 struct list* delete(struct list *list, int element)
 {
   if(is_empty(list)) {
@@ -85,21 +93,15 @@ struct list* delete(struct list *list, int element)
   }
 
   struct node *current, *prev;
-  prev = list->head;
-  current = list->head->next;
+  prev = find_node(list->head, element);
+  current = prev->next;
 
-  while(current->element != element)
+  if(current->next == NULL && current->element != element)
   {
-    prev = current;
-    if(current == list->tail)
-    {
-      printf("Cannot find the element in the list\n");
-      return list;
-    }
-    current = current->next;
+    printf("Element not found\n");
+    return list;
   }
-  
-  if(prev == list->head && current->next == NULL)
+  else if(prev == list->head && current->next == NULL)
   {
     list->tail = list->head = NULL;
   }
@@ -113,46 +115,49 @@ struct list* delete(struct list *list, int element)
   return list;
 }
 
-int main()
+int menu(struct list* list)
 {
   int choice, value;
+
+  printf("Menu\n1. Insert\n2. Delete\n3. Display list\n4. Size of the list\n5. Exit\n");
+  scanf("%d", &choice);
+
+  switch(choice)
+  {
+    case 1:
+      printf("Enter the number:");
+      scanf("%d", &value);
+      list = insert(list, value);
+      display(list);
+      break;
+ 
+    case 2:
+      printf("Enter the element to be deleted:");
+      scanf("%d", &value);
+      list = delete(list, value);
+      display(list);
+      break;
+  
+    case 3:
+      display(list);
+      break;
+
+    case 4:
+      printf("No of elements in the list: %d\n", list_size(list->head));
+      break;
+
+    default: exit(0);
+  }
+  menu(list);
+  return 0;
+}
+
+int main()
+{
   struct list *newList;
 
   newList = malloc(sizeof(struct list));
   newList->head = newList->tail = NULL;
-  
-  do
-  {
-    printf("Menu\n1. Insert\n2. Delete\n3. Display list\n4. Size of the list\n5. Exit\n");
-    scanf("%d", &choice);
 
-    switch(choice)
-    {
-      case 1:
-        printf("Enter the number:");
-        scanf("%d", &value);
-        newList = insert(newList, value);
-        display(newList);
-        break;
- 
-      case 2:
-        printf("Enter the element to be deleted:");
-	scanf("%d", &value);
-	newList = delete(newList, value);
-	display(newList);
-	break;
-     
-      case 3:
-        display(newList);
-	break;
-
-      case 4:
-        printf("No of elements in the list: %d\n", list_size(newList->head));
-        break;
-      
-      default: exit(0);
-    }
-  } while(1);
-  
-  return 0;
+  return menu(newList);
 }
