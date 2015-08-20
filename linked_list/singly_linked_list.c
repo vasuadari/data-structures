@@ -12,108 +12,126 @@ struct list
   struct node *head, *tail;
 };
 
-int is_empty(struct list *list)
+void empty(struct list* list)
 {
-  return list->head == NULL;
+  list->head = list->tail = NULL;
 }
 
-struct list* append(struct list *list, struct node *newNode)
+int is_empty(struct list* list)
 {
-  list->tail->next = newNode;
-  list->tail = list->tail->next;
-  return list;
+  return list->head == list->tail;
 }
 
-void displayElement(struct node* cursor)
+// Insert
+
+void add(struct list* list, struct node* newNode)
 {
-  printf("%d", cursor->element);
-  printf("->");
-  if(cursor->next != NULL)
-    displayElement(cursor->next);
+  list->head = malloc(sizeof(struct node));
+  list->head->next = list->tail = newNode;
+
   return;
 }
 
-int list_size(struct node* cursor)
+void append(struct list* list, struct node* newNode)
 {
-  if(cursor->next == NULL)
-    return 0;
-  else
-    return 1 + list_size(cursor->next);
+  list->tail->next = newNode;
+  list->tail = list->tail->next;
+
+  return;
 }
 
-void display(struct list *list)
+void insert(struct list* list, int element)
 {
-  if(is_empty(list))
+  struct node* newNode;
+  newNode = malloc(sizeof(struct node));
+  newNode->element = element;
+  newNode->next = NULL;
+
+  if (is_empty(list))
+    add(list, newNode);
+  else
+    append(list, newNode);
+
+  return;
+}
+
+// Delete
+
+struct node* find_node(struct node* prev, int element)
+{
+  struct node* next = prev->next;
+
+  if (next == NULL || (next != NULL && next->element == element))
+    return prev;
+  else
+    return find_node(next, element);
+}
+
+void delete(struct list* list, int element)
+{
+  if (is_empty(list)) {
+    printf("List is empty\n");
+    return;
+  }
+
+  struct node *prev, *next;
+  prev = find_node(list->head, element);
+  next = prev->next;
+
+  if (next == NULL && prev->element != element)
+    printf("Element not found\n");
+  else
+    prev->next = next->next;
+
+    if (prev->next == NULL)
+      list->tail = prev;
+
+    if (is_empty(list))
+      empty(list);
+
+  return;
+}
+
+// Display
+
+void display_element(struct node* cursor)
+{
+  printf("%d", cursor->element);
+  printf("->");
+
+  if (cursor->next != NULL)
+    display_element(cursor->next);
+
+  return;
+}
+
+void display(struct list* list)
+{
+  if (is_empty(list))
   {
     printf("List is empty\n");
     return;
   }
-  struct node *cursor;
+
+  struct node* cursor;
   cursor = list->head;
   printf("Singly Linked List:\n");
 
-  if(cursor->next != NULL)
-    displayElement(cursor->next);
+  if (cursor->next != NULL)
+    display_element(cursor->next);
 
   printf("\n");
+  return;
 }
 
-struct list* add(struct list *list, struct node *newNode)
+// Determine size of the list
+
+int size(struct node* cursor)
 {
-  list->head = malloc(sizeof(struct node));
-  list->head->next = list->tail = newNode;
-  return list;
+  return (cursor != NULL && cursor->next != NULL) ? 1 + size(cursor->next) : 0;
 }
 
-struct list* insert(struct list *list, int element)
-{
-  struct node *newNode;
-  newNode = malloc(sizeof(struct node));
-  newNode->element = element;
-  newNode->next = NULL;
-  if(is_empty(list))
-    return add(list, newNode);
-  else
-    return append(list, newNode);
-}
-
-struct node* find_node(struct node* current, int element)
-{
-  if(current->next == NULL || current->next->element == element)
-    return current;
-  else
-    return find_node(current->next, element);
-}
-
-struct list* delete(struct list *list, int element)
-{
-  if(is_empty(list)) {
-    printf("List is empty\n");
-    return list;
-  }
-
-  struct node *current, *prev;
-  prev = find_node(list->head, element);
-  current = prev->next;
-
-  if(current->next == NULL && current->element != element)
-  {
-    printf("Element not found\n");
-    return list;
-  }
-  else if(prev == list->head && current->next == NULL)
-  {
-    list->tail = list->head = NULL;
-  }
-  else
-  {
-    if(current == list->tail)
-      list->tail = prev;
-    prev->next = current->next;   
-  }
-
-  return list;
-}
+// Display Menu
 
 int menu(struct list* list)
 {
@@ -127,14 +145,14 @@ int menu(struct list* list)
     case 1:
       printf("Enter the number:");
       scanf("%d", &value);
-      list = insert(list, value);
+      insert(list, value);
       display(list);
       break;
  
     case 2:
       printf("Enter the element to be deleted:");
       scanf("%d", &value);
-      list = delete(list, value);
+      delete(list, value);
       display(list);
       break;
   
@@ -143,7 +161,7 @@ int menu(struct list* list)
       break;
 
     case 4:
-      printf("No of elements in the list: %d\n", list_size(list->head));
+      printf("No of elements in the list: %d\n", size(list->head));
       break;
 
     default: exit(0);
@@ -152,12 +170,13 @@ int menu(struct list* list)
   return 0;
 }
 
+
 int main()
 {
-  struct list *newList;
+  struct list* newList;
 
   newList = malloc(sizeof(struct list));
-  newList->head = newList->tail = NULL;
+  empty(newList);
 
   return menu(newList);
 }
