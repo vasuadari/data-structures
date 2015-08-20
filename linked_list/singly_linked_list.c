@@ -24,6 +24,23 @@ struct list* append(struct list *list, struct node *newNode)
   return list;
 }
 
+void displayElement(struct node* cursor)
+{
+  printf("%d", cursor->element);
+  printf("->");
+  if(cursor->next != NULL)
+    displayElement(cursor->next);
+  return;
+}
+
+int list_size(struct node* cursor)
+{
+  if(cursor->next == NULL)
+    return 0;
+  else
+    return 1 + list_size(cursor->next);
+}
+
 void display(struct list *list)
 {
   if(is_empty(list))
@@ -34,13 +51,10 @@ void display(struct list *list)
   struct node *cursor;
   cursor = list->head;
   printf("Singly Linked List:\n");
-  printf("%d\n", cursor->next == NULL);
-  while(cursor->next != NULL)
-  {
-    printf("%d", cursor->next->element);
-    printf("->");
-    cursor = cursor->next;
-  }
+
+  if(cursor->next != NULL)
+    displayElement(cursor->next);
+
   printf("\n");
 }
 
@@ -109,7 +123,7 @@ int main()
   
   do
   {
-    printf("Menu\n1. Insert\n2. Delete\n3. Display list\n4. Exit\n");
+    printf("Menu\n1. Insert\n2. Delete\n3. Display list\n4. Size of the list\n5. Exit\n");
     scanf("%d", &choice);
 
     switch(choice)
@@ -131,6 +145,10 @@ int main()
       case 3:
         display(newList);
 	break;
+
+      case 4:
+        printf("No of elements in the list: %d\n", list_size(newList->head));
+        break;
       
       default: exit(0);
     }
