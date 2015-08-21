@@ -9,6 +9,7 @@ struct node
 
 struct list
 {
+  int size;
   struct node *head, *tail;
 };
 
@@ -28,6 +29,7 @@ void add(struct list* list, struct node* newNode)
 {
   list->head = malloc(sizeof(struct node));
   list->head->next = list->tail = newNode;
+  list->size = 0;
 
   return;
 }
@@ -51,6 +53,8 @@ void insert(struct list* list, int element)
     add(list, newNode);
   else
     append(list, newNode);
+
+  list->size++;
 
   return;
 }
@@ -124,13 +128,6 @@ void display(struct list* list)
   return;
 }
 
-// Determine size of the list
-
-int size(struct node* cursor)
-{
-  return (cursor != NULL && cursor->next != NULL) ? 1 + size(cursor->next) : 0;
-}
-
 // Display Menu
 
 int menu(struct list* list)
@@ -161,7 +158,7 @@ int menu(struct list* list)
       break;
 
     case 4:
-      printf("No of elements in the list: %d\n", size(list->head));
+      printf("No of elements in the list: %d\n", list->size);
       break;
 
     default: exit(0);
