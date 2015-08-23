@@ -1,20 +1,20 @@
 #include "circular_linked_list.h"
 
-void empty(struct list* list)
+void cll_empty(CIRCULAR_LINKED_LIST* list)
 {
   list->head = list->tail = NULL;
 }
 
-int is_empty(struct list* list)
+int cll_is_empty(CIRCULAR_LINKED_LIST* list)
 {
   return list->head == list->tail;
 }
 
 // Insert
 
-void add(struct list* list, struct node* newNode)
+void cll_add(CIRCULAR_LINKED_LIST* list, CIRCULAR_LINKED_LIST_NODE* newNode)
 {
-  list->head = malloc(sizeof(struct node));
+  list->head = malloc(sizeof(CIRCULAR_LINKED_LIST_NODE));
   list->head->next = list->tail = newNode;
   newNode->next = list->head;
   list->size = 0;
@@ -22,7 +22,7 @@ void add(struct list* list, struct node* newNode)
   return;
 }
 
-void append(struct list* list, struct node* newNode)
+void cll_append(CIRCULAR_LINKED_LIST* list, CIRCULAR_LINKED_LIST_NODE* newNode)
 {
   list->tail->next = newNode;
   list->tail = list->tail->next;
@@ -31,17 +31,17 @@ void append(struct list* list, struct node* newNode)
   return;
 }
 
-void insert(struct list* list, int element)
+void cll_insert(CIRCULAR_LINKED_LIST* list, int element)
 {
-  struct node* newNode;
-  newNode = malloc(sizeof(struct node));
+  CIRCULAR_LINKED_LIST_NODE* newNode;
+  newNode = malloc(sizeof(CIRCULAR_LINKED_LIST_NODE));
   newNode->element = element;
   newNode->next = NULL;
 
-  if (is_empty(list))
-    add(list, newNode);
+  if (cll_is_empty(list))
+    cll_add(list, newNode);
   else
-    append(list, newNode);
+    cll_append(list, newNode);
 
   list->size++;
 
@@ -50,25 +50,25 @@ void insert(struct list* list, int element)
 
 // Delete
 
-struct node* find_node(struct list* list, struct node* prev, int element)
+CIRCULAR_LINKED_LIST_NODE* cll_find_node(CIRCULAR_LINKED_LIST* list, CIRCULAR_LINKED_LIST_NODE* prev, int element)
 {
-  struct node* next = prev->next;
+  CIRCULAR_LINKED_LIST_NODE* next = prev->next;
 
   if (next == list->head || next->element == element)
     return prev;
   else
-    return find_node(list, next, element);
+    return cll_find_node(list, next, element);
 }
 
-void delete(struct list* list, int element)
+void cll_delete(CIRCULAR_LINKED_LIST* list, int element)
 {
-  if (is_empty(list)) {
+  if (cll_is_empty(list)) {
     printf("List is empty\n");
     return;
   }
 
-  struct node *prev, *next;
-  prev = find_node(list, list->head, element);
+  CIRCULAR_LINKED_LIST_NODE *prev, *next;
+  prev = cll_find_node(list, list->head, element);
   next = prev->next;
 
   if (next == list->head && prev->element != element)
@@ -81,8 +81,8 @@ void delete(struct list* list, int element)
     if (prev->next == list->head)
       list->tail = prev;
 
-    if (is_empty(list))
-      empty(list);
+    if (cll_is_empty(list))
+      cll_empty(list);
   }
 
   return;
@@ -90,90 +90,89 @@ void delete(struct list* list, int element)
 
 // Display
 
-void display_element(struct list* list, struct node* cursor)
+void cll_display_element(CIRCULAR_LINKED_LIST* list, CIRCULAR_LINKED_LIST_NODE* cursor)
 {
   printf("%d", cursor->element);
 
   if (cursor->next != list->head)
   {
     printf("->");
-    display_element(list, cursor->next);
+    cll_display_element(list, cursor->next);
   }
 
   return;
 }
 
-void display(struct list* list)
+void cll_display(CIRCULAR_LINKED_LIST* list)
 {
-  if (is_empty(list))
+  if (cll_is_empty(list))
   {
     printf("List is empty\n");
     return;
   }
 
-  struct node* cursor;
+  CIRCULAR_LINKED_LIST_NODE* cursor;
   cursor = list->head;
   printf("Circular Linked List:\n");
 
   if (cursor->next != NULL)
-    display_element(list, cursor->next);
+    cll_display_element(list, cursor->next);
 
   printf("\n");
   return;
 }
 
-struct list* circular_linked_list()
+CIRCULAR_LINKED_LIST* circular_linked_list()
 {
-  struct list* new_list;
-  new_list = malloc(sizeof(struct list));
-  empty(new_list);
+  CIRCULAR_LINKED_LIST* new_list;
+  new_list = malloc(sizeof(CIRCULAR_LINKED_LIST));
+  cll_empty(new_list);
 
   return new_list;
 }
 
-// Display Menu
+// Menu
 
-int menu(struct list* list)
+int cll_menu(CIRCULAR_LINKED_LIST* list)
 {
   int choice, value;
 
-  printf("\nMenu\n1. Insert\n2. Delete\n3. Display list\n4. Size of the list\n5. Exit\n");
+  printf("Menu\n1. Insert\n2. Delete\n3. Display all the elements\n4. Size of the list\n5. Back to Main Menu\n6. Exit\nYour Choice:");
   scanf("%d", &choice);
 
   switch(choice)
   {
     case 1:
-      printf("Enter the number:");
+      printf("Enter the value to insert:");
       scanf("%d", &value);
-      insert(list, value);
-      display(list);
+      cll_insert(list, value);
+      cll_display(list);
       break;
- 
+
     case 2:
-      display(list);
-      printf("Enter the element to be deleted:");
+      cll_display(list);
+      printf("Enter the value to be deleted:");
       scanf("%d", &value);
-      delete(list, value);
-      display(list);
+      cll_delete(list, value);
+      cll_display(list);
       break;
-  
+
     case 3:
-      display(list);
+      cll_display(list);
       break;
 
     case 4:
-      display(list);
-      printf("No of elements in the list: %d\n", list->size);
+      cll_display(list);
+      printf("No. of elements in the list: %d\n", list->size);
+      break;
+
+    case 5:
+      main_menu();
       break;
 
     default: exit(0);
   }
-  menu(list);
+  cll_menu(list);
+
   return 0;
-}
-
-
-int main()
-{
-  return menu(circular_linked_list());
 }

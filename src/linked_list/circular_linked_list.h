@@ -1,32 +1,36 @@
 #include "../../include/main.h"
 
-struct node
+typedef struct circular_linked_list_node CIRCULAR_LINKED_LIST_NODE;
+typedef struct circular_linked_list CIRCULAR_LINKED_LIST;
+
+struct circular_linked_list_node
 {
   int element;
-  struct node *prev, *next;
+  struct circular_linked_list_node *prev, *next;
 };
 
-struct list
+struct circular_linked_list
 {
   int size;
-  struct node *head, *tail;
+  CIRCULAR_LINKED_LIST_NODE *head, *tail;
 };
 
-void empty(struct list* list);
+void cll_empty(CIRCULAR_LINKED_LIST* list);
 
-int is_empty(struct list* list);
+int cll_is_empty(CIRCULAR_LINKED_LIST* list);
 
-void add(struct list* list, struct node* newNode);
+void cll_add(CIRCULAR_LINKED_LIST* list, CIRCULAR_LINKED_LIST_NODE* newNode);
 
-void append(struct list* list, struct node* newNode);
+void cll_append(CIRCULAR_LINKED_LIST* list, CIRCULAR_LINKED_LIST_NODE* newNode);
 
-void insert(struct list* list, int element);
+void cll_insert(CIRCULAR_LINKED_LIST* list, int element);
 
-struct node* find_node(struct list* list, struct node* prev, int element);
+CIRCULAR_LINKED_LIST_NODE* cll_find_node(CIRCULAR_LINKED_LIST* list, CIRCULAR_LINKED_LIST_NODE* prev, int element);
 
-void delete(struct list* list, int element);
+void cll_delete(CIRCULAR_LINKED_LIST* list, int element);
 
-void display_element(struct list* list, struct node* cursor);
+void cll_display_element(CIRCULAR_LINKED_LIST* list, CIRCULAR_LINKED_LIST_NODE* cursor);
 
-void display(struct list* list);
+void cll_display(CIRCULAR_LINKED_LIST* list);
 
+CIRCULAR_LINKED_LIST* cll_circular_linked_list();

@@ -1,33 +1,36 @@
 #include "../../include/main.h"
 
-struct node
+typedef struct singly_linked_list_node SINGLY_LINKED_LIST_NODE;
+typedef struct singly_linked_list SINGLY_LINKED_LIST;
+
+struct singly_linked_list_node
 {
   int element;
-  struct node *next;
+  struct singly_linked_list_node* next;
 };
 
-struct list
+struct singly_linked_list
 {
   int size;
-  struct node *head, *tail;
+  SINGLY_LINKED_LIST_NODE *head, *tail;
 };
 
-void empty(struct list* list);
+void sll_empty(SINGLY_LINKED_LIST* list);
 
-int is_empty(struct list* list);
+int sll_is_empty(SINGLY_LINKED_LIST* list);
 
-void add(struct list* list, struct node* newNode);
+void sll_add(SINGLY_LINKED_LIST* list, SINGLY_LINKED_LIST_NODE* newNode);
 
-void append(struct list* list, struct node* newNode);
+void sll_append(SINGLY_LINKED_LIST* list, SINGLY_LINKED_LIST_NODE* newNode);
 
-void insert(struct list* list, int element);
+void sll_insert(SINGLY_LINKED_LIST* list, int element);
 
-struct node* find_node(struct node* prev, int element);
+SINGLY_LINKED_LIST_NODE* sll_find_node(SINGLY_LINKED_LIST_NODE* prev, int element);
 
-void delete(struct list* list, int element);
+void sll_delete(SINGLY_LINKED_LIST* list, int element);
 
-void display_element(struct node* cursor);
+void sll_display_element(SINGLY_LINKED_LIST_NODE* cursor);
 
-void display(struct list* list);
+void sll_display(SINGLY_LINKED_LIST* list);
 
-struct list* singly_linked_list();
+SINGLY_LINKED_LIST* singly_linked_list();

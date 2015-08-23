@@ -1,20 +1,20 @@
 include Makefile.inc
 
 SRC_DIR		:= src
-BUILD_DIR	:= build
+BIN_DIR		:= bin
 
 all: checkdirs recursive
 
-checkdirs: build
+checkdirs: $(BIN_DIR)
 
-build:
-	$(ECHO) creating $(BUILD_DIR) directory
-	mkdir $(BUILD_DIR)
+$(BIN_DIR):
+	$(ECHO) creating $(BIN_DIR) directory
+	mkdir $(BIN_DIR)
 
 recursive:
 	$(ECHO) started building *.c files in $(SRC_DIR)/
-	cd src/linked_list; $(MAKE) $(MFLAGS)
+	cd src; $(MAKE) $(MFLAGS)
 
 clean:
-	$(ECHO) cleaning up $(BUILD_DIR) directory
-	$(RM) -rf $(BUILD_DIR)
+	$(ECHO) cleaning up $(BIN_DIR) directory
+	$(RM) -rf $(BIN_DIR)

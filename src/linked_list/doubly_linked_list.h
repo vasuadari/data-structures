@@ -1,31 +1,36 @@
 #include "../../include/main.h"
 
-struct node
+typedef struct doubly_linked_list_node DOUBLY_LINKED_LIST_NODE;
+typedef struct doubly_linked_list DOUBLY_LINKED_LIST;
+
+struct doubly_linked_list_node
 {
   int element;
-  struct node *prev, *next;
+  struct doubly_linked_list_node *prev, *next;
 };
 
-struct list
+struct doubly_linked_list
 {
   int size;
-  struct node *head, *tail;
+  DOUBLY_LINKED_LIST_NODE *head, *tail;
 };
 
-void empty(struct list* list);
+void dll_empty(DOUBLY_LINKED_LIST* list);
 
-int is_empty(struct list* list);
+int dll_is_empty(DOUBLY_LINKED_LIST* list);
 
-void add(struct list* list, struct node* newNode);
+void dll_add(DOUBLY_LINKED_LIST* list, DOUBLY_LINKED_LIST_NODE* newNode);
 
-void append(struct list* list, struct node* newNode);
+void dll_append(DOUBLY_LINKED_LIST* list, DOUBLY_LINKED_LIST_NODE* newNode);
 
-void insert(struct list* list, int element);
+void dll_insert(DOUBLY_LINKED_LIST* list, int element);
 
-struct node* find_node(struct node* prev, int element);
+DOUBLY_LINKED_LIST_NODE* dll_find_node(DOUBLY_LINKED_LIST_NODE* prev, int element);
 
-void delete(struct list* list, int element);
+void dll_delete(DOUBLY_LINKED_LIST* list, int element);
 
-void display_element(struct node* cursor);
+void dll_display_element(DOUBLY_LINKED_LIST_NODE* cursor);
 
-void display(struct list* list);
+void dll_display(DOUBLY_LINKED_LIST* list);
+
+DOUBLY_LINKED_LIST* dll_doubly_linked_list();

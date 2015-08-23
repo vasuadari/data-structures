@@ -1,27 +1,27 @@
 #include "singly_linked_list.h"
 
-void empty(struct list* list)
+void sll_empty(SINGLY_LINKED_LIST* list)
 {
   list->head = list->tail = NULL;
 }
 
-int is_empty(struct list* list)
+int sll_is_empty(SINGLY_LINKED_LIST* list)
 {
   return list->head == list->tail;
 }
 
 // Insert
 
-void add(struct list* list, struct node* newNode)
+void sll_add(SINGLY_LINKED_LIST* list, SINGLY_LINKED_LIST_NODE* newNode)
 {
-  list->head = malloc(sizeof(struct node));
+  list->head = malloc(sizeof(SINGLY_LINKED_LIST_NODE));
   list->head->next = list->tail = newNode;
   list->size = 0;
 
   return;
 }
 
-void append(struct list* list, struct node* newNode)
+void sll_append(SINGLY_LINKED_LIST* list, SINGLY_LINKED_LIST_NODE* newNode)
 {
   list->tail->next = newNode;
   list->tail = list->tail->next;
@@ -29,17 +29,17 @@ void append(struct list* list, struct node* newNode)
   return;
 }
 
-void insert(struct list* list, int element)
+void sll_insert(SINGLY_LINKED_LIST* list, int element)
 {
-  struct node* newNode;
-  newNode = malloc(sizeof(struct node));
+  SINGLY_LINKED_LIST_NODE* newNode;
+  newNode = malloc(sizeof(SINGLY_LINKED_LIST_NODE));
   newNode->element = element;
   newNode->next = NULL;
 
-  if (is_empty(list))
-    add(list, newNode);
+  if (sll_is_empty(list))
+    sll_add(list, newNode);
   else
-    append(list, newNode);
+    sll_append(list, newNode);
 
   list->size++;
 
@@ -48,25 +48,25 @@ void insert(struct list* list, int element)
 
 // Delete
 
-struct node* find_node(struct node* prev, int element)
+SINGLY_LINKED_LIST_NODE* sll_find_node(SINGLY_LINKED_LIST_NODE* prev, int element)
 {
-  struct node* next = prev->next;
+  SINGLY_LINKED_LIST_NODE* next = prev->next;
 
   if (next == NULL || (next != NULL && next->element == element))
     return prev;
   else
-    return find_node(next, element);
+    return sll_find_node(next, element);
 }
 
-void delete(struct list* list, int element)
+void sll_delete(SINGLY_LINKED_LIST* list, int element)
 {
-  if (is_empty(list)) {
+  if (sll_is_empty(list)) {
     printf("List is empty\n");
     return;
   }
 
-  struct node *prev, *next;
-  prev = find_node(list->head, element);
+  SINGLY_LINKED_LIST_NODE *prev, *next;
+  prev = sll_find_node(list->head, element);
   next = prev->next;
 
   if (next == NULL && prev->element != element)
@@ -79,8 +79,8 @@ void delete(struct list* list, int element)
     if (prev->next == NULL)
       list->tail = prev;
 
-    if (is_empty(list))
-      empty(list);
+    if (sll_is_empty(list))
+      sll_empty(list);
   }
 
   return;
@@ -88,90 +88,90 @@ void delete(struct list* list, int element)
 
 // Display
 
-void display_element(struct node* cursor)
+void sll_display_element(SINGLY_LINKED_LIST_NODE* cursor)
 {
   printf("%d", cursor->element);
 
   if (cursor->next != NULL)
   {
     printf("->");
-    display_element(cursor->next);
+    sll_display_element(cursor->next);
   }
 
   return;
 }
 
-void display(struct list* list)
+void sll_display(SINGLY_LINKED_LIST* list)
 {
-  if (is_empty(list))
+  if (sll_is_empty(list))
   {
     printf("List is empty\n");
     return;
   }
 
-  struct node* cursor;
+  SINGLY_LINKED_LIST_NODE* cursor;
   cursor = list->head;
   printf("Singly Linked List:\n");
 
   if (cursor->next != NULL)
-    display_element(cursor->next);
+    sll_display_element(cursor->next);
 
   printf("\n");
   return;
 }
 
-struct list* singly_linked_list()
+SINGLY_LINKED_LIST* singly_linked_list()
 {
-  struct list* new_list;
+  SINGLY_LINKED_LIST* new_list;
 
-  new_list = malloc(sizeof(struct list));
-  empty(new_list);
+  new_list = malloc(sizeof(SINGLY_LINKED_LIST));
+  sll_empty(new_list);
 
   return new_list;
 }
 
-// Display Menu
+// Menu
 
-int menu(struct list* list)
+int sll_menu(SINGLY_LINKED_LIST* list)
 {
   int choice, value;
 
-  printf("Menu\n1. Insert\n2. Delete\n3. Display list\n4. Size of the list\n5. Exit\n");
+  printf("Menu\n1. Insert\n2. Delete\n3. Display all the elements\n4. Size of the list\n5. Back to Main Menu\n6. Exit\nYour Choice:");
   scanf("%d", &choice);
 
   switch(choice)
   {
     case 1:
-      printf("Enter the number:");
+      printf("Enter the value to insert:");
       scanf("%d", &value);
-      insert(list, value);
-      display(list);
+      sll_insert(list, value);
+      sll_display(list);
       break;
- 
+
     case 2:
-      display(list);
-      printf("Enter the element to be deleted:");
+      sll_display(list);
+      printf("Enter the value to be deleted:");
       scanf("%d", &value);
-      delete(list, value);
-      display(list);
+      sll_delete(list, value);
+      sll_display(list);
       break;
-  
+
     case 3:
-      display(list);
+      sll_display(list);
       break;
 
     case 4:
-      display(list);
-      printf("No of elements in the list: %d\n", list->size);
+      sll_display(list);
+      printf("No. of elements in the list: %d\n", list->size);
+      break;
+
+    case 5:
+      main_menu();
       break;
 
     default: exit(0);
   }
-  menu(list);
-  return 0;
-}
+  sll_menu(list);
 
-int main()
-{
-  return menu(singly_linked_list());
+  return 0;
 }

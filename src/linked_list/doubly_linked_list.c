@@ -1,20 +1,20 @@
 #include "doubly_linked_list.h"
 
-void empty(struct list* list)
+void dll_empty(DOUBLY_LINKED_LIST* list)
 {
   list->head = list->tail = NULL;
 }
 
-int is_empty(struct list* list)
+int dll_is_empty(DOUBLY_LINKED_LIST* list)
 {
   return list->head == list->tail;
 }
 
 // Insert
 
-void add(struct list* list, struct node* newNode)
+void dll_add(DOUBLY_LINKED_LIST* list, DOUBLY_LINKED_LIST_NODE* newNode)
 {
-  list->head = malloc(sizeof(struct list));
+  list->head = malloc(sizeof(DOUBLY_LINKED_LIST));
   newNode->prev = list->head;
   list->tail = newNode;
   list->head->next = list->tail;
@@ -23,7 +23,7 @@ void add(struct list* list, struct node* newNode)
   return;
 }
 
-void append(struct list* list, struct node* newNode)
+void dll_append(DOUBLY_LINKED_LIST* list, DOUBLY_LINKED_LIST_NODE* newNode)
 {
   newNode->prev = list->tail;
   list->tail->next = newNode;
@@ -32,17 +32,17 @@ void append(struct list* list, struct node* newNode)
   return;
 }
 
-void insert(struct list* list, int element)
+void dll_insert(DOUBLY_LINKED_LIST* list, int element)
 {
-  struct node* newNode;
-  newNode = malloc(sizeof(struct node));
+  DOUBLY_LINKED_LIST_NODE* newNode;
+  newNode = malloc(sizeof(DOUBLY_LINKED_LIST_NODE));
   newNode->element = element;
   newNode->prev = newNode->next = NULL;
 
-  if (is_empty(list))
-    add(list, newNode);
+  if (dll_is_empty(list))
+    dll_add(list, newNode);
   else
-    append(list, newNode);
+    dll_append(list, newNode);
 
   list->size++;
 
@@ -51,25 +51,25 @@ void insert(struct list* list, int element)
 
 // Delete
 
-struct node* find_node(struct node* prev, int element)
+DOUBLY_LINKED_LIST_NODE* dll_find_node(DOUBLY_LINKED_LIST_NODE* prev, int element)
 {
   if (prev->element != element && prev->next != NULL)
-    return find_node(prev->next, element);
+    return dll_find_node(prev->next, element);
   else
     return prev;
 }
 
-void delete(struct list* list, int element)
+void dll_delete(DOUBLY_LINKED_LIST* list, int element)
 {
-  if (is_empty(list))
+  if (dll_is_empty(list))
   {
     printf("List is empty");
     return;
   }
 
-  struct node* node;
-  node = malloc(sizeof(struct node));
-  node = find_node(list->head, element);
+  DOUBLY_LINKED_LIST_NODE* node;
+  node = malloc(sizeof(DOUBLY_LINKED_LIST_NODE));
+  node = dll_find_node(list->head, element);
 
   if (node->next == NULL)
   {
@@ -92,30 +92,30 @@ void delete(struct list* list, int element)
 
   list->size--;
 
-  if (is_empty(list))
-    empty(list);
+  if (dll_is_empty(list))
+    dll_empty(list);
 
   return;
 }
 
 // Display
 
-void display_element(struct node* cursor)
+void dll_display_element(DOUBLY_LINKED_LIST_NODE* cursor)
 {
   printf("%d", cursor->element);
 
   if (cursor->next != NULL)
   {
     printf("->");
-    display_element(cursor->next);
+    dll_display_element(cursor->next);
   }
 
   return;
 }
 
-void display(struct list* list)
+void dll_display(DOUBLY_LINKED_LIST* list)
 {
-  if (is_empty(list))
+  if (dll_is_empty(list))
   {
     printf("List is empty\n");
     return;
@@ -123,28 +123,28 @@ void display(struct list* list)
 
   printf("Doubly linked list\n");
 
-  display_element(list->head->next);
+  dll_display_element(list->head->next);
 
   printf("\n");
   return;
 }
 
-struct list* doubly_linked_list()
+DOUBLY_LINKED_LIST* doubly_linked_list()
 {
-  struct list* new_list;
-  new_list = malloc(sizeof(struct node*));
-  empty(new_list);
+  DOUBLY_LINKED_LIST* new_list;
+  new_list = malloc(sizeof(DOUBLY_LINKED_LIST*));
+  dll_empty(new_list);
 
   return new_list;
 }
 
 // Menu
 
-int menu(struct list* list)
+int dll_menu(DOUBLY_LINKED_LIST* list)
 {
   int choice, value;
 
-  printf("Menu\n1. Insert\n2. Delete\n3. Display all the elements\n4. Size of the list\n5. Exit\nYour Choice:");
+  printf("Menu\n1. Insert\n2. Delete\n3. Display all the elements\n4. Size of the list\n5. Back to Main Menu\n6. Exit\nYour Choice:");
   scanf("%d", &choice);
 
   switch(choice)
@@ -152,34 +152,34 @@ int menu(struct list* list)
     case 1:
       printf("Enter the value to insert:");
       scanf("%d", &value);
-      insert(list, value);
-      display(list);
+      dll_insert(list, value);
+      dll_display(list);
       break;
 
     case 2:
-      display(list);
+      dll_display(list);
       printf("Enter the value to be deleted:");
       scanf("%d", &value);
-      delete(list, value);
-      display(list);
+      dll_delete(list, value);
+      dll_display(list);
       break;
 
     case 3:
-      display(list);
+      dll_display(list);
       break;
 
-   case 4:
-      display(list);
+    case 4:
+      dll_display(list);
       printf("No. of elements in the list: %d\n", list->size);
+      break;
+
+    case 5:
+      main_menu();
       break;
 
     default: exit(0);
   }
-  menu(list);
+  dll_menu(list);
 
   return 0;
-}
-
-int main() {
-  return menu(doubly_linked_list());
 }
