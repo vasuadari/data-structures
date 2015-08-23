@@ -1,17 +1,4 @@
-#include <stdio.h>
-#include <stdlib.h>
-
-struct node
-{
-  int element;
-  struct node *next;
-};
-
-struct list
-{
-  int size;
-  struct node *head, *tail;
-};
+#include "circular_linked_list.h"
 
 void empty(struct list* list)
 {
@@ -87,13 +74,16 @@ void delete(struct list* list, int element)
   if (next == list->head && prev->element != element)
     printf("Element not found\n");
   else
+  {
     prev->next = next->next;
+    list->size--;
 
     if (prev->next == list->head)
       list->tail = prev;
 
     if (is_empty(list))
       empty(list);
+  }
 
   return;
 }
@@ -103,10 +93,12 @@ void delete(struct list* list, int element)
 void display_element(struct list* list, struct node* cursor)
 {
   printf("%d", cursor->element);
-  printf("->");
 
   if (cursor->next != list->head)
+  {
+    printf("->");
     display_element(list, cursor->next);
+  }
 
   return;
 }
@@ -130,13 +122,22 @@ void display(struct list* list)
   return;
 }
 
+struct list* circular_linked_list()
+{
+  struct list* new_list;
+  new_list = malloc(sizeof(struct list));
+  empty(new_list);
+
+  return new_list;
+}
+
 // Display Menu
 
 int menu(struct list* list)
 {
   int choice, value;
 
-  printf("Menu\n1. Insert\n2. Delete\n3. Display list\n4. Size of the list\n5. Exit\n");
+  printf("\nMenu\n1. Insert\n2. Delete\n3. Display list\n4. Size of the list\n5. Exit\n");
   scanf("%d", &choice);
 
   switch(choice)
@@ -149,6 +150,7 @@ int menu(struct list* list)
       break;
  
     case 2:
+      display(list);
       printf("Enter the element to be deleted:");
       scanf("%d", &value);
       delete(list, value);
@@ -160,6 +162,7 @@ int menu(struct list* list)
       break;
 
     case 4:
+      display(list);
       printf("No of elements in the list: %d\n", list->size);
       break;
 
@@ -172,10 +175,5 @@ int menu(struct list* list)
 
 int main()
 {
-  struct list* newList;
-
-  newList = malloc(sizeof(struct list));
-  empty(newList);
-
-  return menu(newList);
+  return menu(circular_linked_list());
 }

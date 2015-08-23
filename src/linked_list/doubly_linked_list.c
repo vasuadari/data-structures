@@ -1,17 +1,4 @@
-#include <stdio.h>
-#include <stdlib.h>
-
-struct node
-{
-  int element;
-  struct node *prev, *next;
-};
-
-struct list
-{
-  int size;
-  struct node *head, *tail;
-};
+#include "doubly_linked_list.h"
 
 void empty(struct list* list)
 {
@@ -85,9 +72,25 @@ void delete(struct list* list, int element)
   node = find_node(list->head, element);
 
   if (node->next == NULL)
-    list->tail = node->prev;
+  {
+    if (node->element != element)
+    {
+      printf("Element not found\n");
+      return;
+    }
+    else
+    {
+      list->tail = node->prev;
+      node->prev->next = node->next;
+    }
+  }
   else
-    node->prev = node->next;
+  {
+    node->prev->next = node->next;
+    node->next->prev = node->prev;
+  }
+
+  list->size--;
 
   if (is_empty(list))
     empty(list);
@@ -102,7 +105,10 @@ void display_element(struct node* cursor)
   printf("%d", cursor->element);
 
   if (cursor->next != NULL)
+  {
+    printf("->");
     display_element(cursor->next);
+  }
 
   return;
 }
@@ -123,13 +129,22 @@ void display(struct list* list)
   return;
 }
 
+struct list* doubly_linked_list()
+{
+  struct list* new_list;
+  new_list = malloc(sizeof(struct node*));
+  empty(new_list);
+
+  return new_list;
+}
+
 // Menu
 
 int menu(struct list* list)
 {
   int choice, value;
 
-  printf("Menu\n1. Insert\n2. Delete\n3. Display all the elements\n4. Size of the list\nYour Choice:");
+  printf("Menu\n1. Insert\n2. Delete\n3. Display all the elements\n4. Size of the list\n5. Exit\nYour Choice:");
   scanf("%d", &choice);
 
   switch(choice)
@@ -142,9 +157,11 @@ int menu(struct list* list)
       break;
 
     case 2:
+      display(list);
       printf("Enter the value to be deleted:");
       scanf("%d", &value);
       delete(list, value);
+      display(list);
       break;
 
     case 3:
@@ -152,7 +169,8 @@ int menu(struct list* list)
       break;
 
    case 4:
-      printf("No. of elements in the list: %d", list->size);
+      display(list);
+      printf("No. of elements in the list: %d\n", list->size);
       break;
 
     default: exit(0);
@@ -163,10 +181,5 @@ int menu(struct list* list)
 }
 
 int main() {
-  struct list* newList;
-
-  newList = malloc(sizeof(struct list));
-  empty(newList);
-
-  return menu(newList);
+  return menu(doubly_linked_list());
 }
