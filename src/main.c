@@ -6,7 +6,7 @@ int main_menu()
 {
   int choice;
 
-  printf("Main Menu\n1. Singly linked list\n2. Doubly linked list\n3. Circular linked list\n4. Queue\n5. Exit\nYour choice:");
+  printf("Main Menu\n1. Singly linked list\n2. Doubly linked list\n3. Circular linked list\n4. Queue\n5. Stack\n6. Exit\nYour choice:");
   scanf("%d", &choice);
 
   switch(choice)
@@ -19,6 +19,8 @@ int main_menu()
       cll_menu(circular_linked_list());
     case 4:
       queue_menu(doubly_linked_list());
+    case 5:
+      stack_menu(singly_linked_list());
     default: exit(1);
   }
 
