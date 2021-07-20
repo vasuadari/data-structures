@@ -1,6 +1,4 @@
-#include "linked_list/singly_linked_list.h"
-#include "linked_list/doubly_linked_list.h"
-#include "linked_list/circular_linked_list.h"
+#include "../include/main.h"
 
 int main_menu()
 {

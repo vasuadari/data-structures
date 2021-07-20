@@ -1,4 +1,5 @@
-#include "../../include/main.h"
+#ifndef CIRCULAR_LINKED_LIST_H
+#define CIRCULAR_LINKED_LIST_H
 
 typedef struct circular_linked_list_node CIRCULAR_LINKED_LIST_NODE;
 typedef struct circular_linked_list CIRCULAR_LINKED_LIST;
@@ -33,4 +34,6 @@ void cll_display_element(CIRCULAR_LINKED_LIST* list, CIRCULAR_LINKED_LIST_NODE* 
 
 void cll_display(CIRCULAR_LINKED_LIST* list);
 
-CIRCULAR_LINKED_LIST* cll_circular_linked_list();
+CIRCULAR_LINKED_LIST* circular_linked_list();
+
+#endif

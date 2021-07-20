@@ -1,4 +1,4 @@
-#include "doubly_linked_list.h"
+#include "../../include/main.h"
 
 void dll_empty(DOUBLY_LINKED_LIST* list)
 {

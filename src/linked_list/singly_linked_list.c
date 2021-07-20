@@ -1,4 +1,4 @@
-#include "singly_linked_list.h"
+#include "../../include/main.h"
 
 void sll_empty(SINGLY_LINKED_LIST* list)
 {

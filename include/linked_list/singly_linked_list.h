@@ -1,4 +1,5 @@
-#include "../../include/main.h"
+#ifndef SINGLY_LINKED_LIST_H
+#define SINGLY_LINKED_LIST_H
 
 typedef struct singly_linked_list_node SINGLY_LINKED_LIST_NODE;
 typedef struct singly_linked_list SINGLY_LINKED_LIST;
@@ -34,3 +35,5 @@ void sll_display_element(SINGLY_LINKED_LIST_NODE* cursor);
 void sll_display(SINGLY_LINKED_LIST* list);
 
 SINGLY_LINKED_LIST* singly_linked_list();
+
+#endif

@@ -1,4 +1,4 @@
-#include "linked_list/singly_linked_list.h"
+#include "../include/main.h"
 
 void push(SINGLY_LINKED_LIST* list, int element)
 {

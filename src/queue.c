@@ -1,4 +1,4 @@
-#include "linked_list/doubly_linked_list.h"
+#include "../include/main.h"
 
 void dequeue(DOUBLY_LINKED_LIST* list)
 {

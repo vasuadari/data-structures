@@ -1,4 +1,5 @@
-#include "../../include/main.h"
+#ifndef DOUBLY_LINKED_LIST_H
+#define DOUBLY_LINKED_LIST_H
 
 typedef struct doubly_linked_list_node DOUBLY_LINKED_LIST_NODE;
 typedef struct doubly_linked_list DOUBLY_LINKED_LIST;
@@ -33,4 +34,6 @@ void dll_display_element(DOUBLY_LINKED_LIST_NODE* cursor);
 
 void dll_display(DOUBLY_LINKED_LIST* list);
 
-DOUBLY_LINKED_LIST* dll_doubly_linked_list();
+DOUBLY_LINKED_LIST* doubly_linked_list();
+
+#endif
